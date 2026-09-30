@@ -401,6 +401,21 @@
   });
   if (fmsg && /[?&]poslano=1/.test(location.search)) say(THANKS, true);
 
+  /* ---------------- cookie notice ---------------- */
+  // the site sets no cookies: this only informs, links the privacy policy and remembers (localStorage) that it was closed
+  (() => {
+    try { if (localStorage.getItem('sw-cookies') === '1') return; } catch (e) {}
+    const n = document.createElement('div');
+    n.className = 'cookie'; n.setAttribute('role', 'region'); n.setAttribute('aria-label', 'Obvestilo o piškotkih');
+    n.innerHTML = '<p><b>Piškotki</b>Ta stran ne uporablja piškotkov za sledenje ali oglaševanje. Več v <a href="zasebnost.html">politiki zasebnosti</a>.</p><button class="btn" type="button">V redu</button>';
+    n.querySelector('button').addEventListener('click', () => {
+      try { localStorage.setItem('sw-cookies', '1'); } catch (e) {}
+      n.classList.remove('on'); setTimeout(() => n.remove(), 450);
+    });
+    body.appendChild(n);
+    setTimeout(() => n.classList.add('on'), 900);
+  })();
+
   /* ---------------- loop ---------------- */
   let last = performance.now(), frame = 0, moveTimer, prog = 0, vel = 0;
   addEventListener('scroll', () => { body.classList.add('moving'); clearTimeout(moveTimer); moveTimer = setTimeout(() => body.classList.remove('moving'), 180); }, { passive: true });

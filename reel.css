@@ -223,7 +223,7 @@ fieldset{grid-column:1/-1;border:0;padding:0;margin:0;display:flex;flex-wrap:wra
 fieldset legend{margin-bottom:12px}
 .chk{position:relative}
 .chk input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
-.chk span{display:inline-block;font:400 15px/1 var(--f-body);padding:14px 16px;border-radius:999px;border:1px solid rgba(241,237,230,.25);transition:.2s}
+.chk span{display:inline-block;font:400 15px/1.25 var(--f-body);padding:14px 16px;border-radius:999px;border:1px solid rgba(241,237,230,.25);transition:.2s}
 .chk input:checked + span{background:var(--brand);border-color:var(--brand);color:var(--ink)}
 .chk input:focus-visible + span{outline:2px solid var(--lamp-2);outline-offset:2px}
 .send{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
@@ -237,7 +237,7 @@ footer img{width:180px;height:auto;display:block}
 footer nav{display:flex;flex-wrap:wrap;gap:6px 18px}
 footer a{text-decoration:none;display:inline-block;padding:12px 0}
 footer a:hover{color:var(--lamp-2)}
-@media (max-width:640px){form{grid-template-columns:1fr}.roll div{grid-template-columns:1fr;gap:4px;text-align:center}.roll dt{text-align:center}.roll i{display:none}}
+@media (max-width:640px){form{grid-template-columns:1fr}.chk span{letter-spacing:.1em;padding:12px 16px}.roll div{grid-template-columns:1fr;gap:4px;text-align:center}.roll dt{text-align:center}.roll i{display:none}}
 
 @media (prefers-reduced-motion:reduce){.bar,.lower,.menu{transition:none}#grain{display:none}}
 
@@ -395,3 +395,32 @@ footer a:hover{color:var(--lamp-2)}
   .hero{width:max-content;min-width:calc(1500px*var(--k) + 60px)}
   .hero h1{white-space:nowrap}
 }
+
+/* ---------- cookie notice (corner card) ---------- */
+.cookie{position:fixed;right:clamp(12px,3vw,32px);bottom:calc(clamp(12px,3vw,32px) + env(safe-area-inset-bottom,0px));z-index:15;width:min(380px,calc(100vw - 24px));display:flex;align-items:center;gap:14px;padding:14px 14px 14px 18px;background:rgba(13,30,52,.96);border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);backdrop-filter:blur(8px);opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .45s,transform .45s}
+.cookie.on{opacity:1;transform:none;pointer-events:auto}
+.cookie p{margin:0;font:400 14px/1.45 var(--f-body);color:var(--film)}
+.cookie b{display:block;font:600 12px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--lamp-2);margin-bottom:6px}
+.cookie a{color:var(--lamp-2)}
+.cookie .btn{flex:none;min-height:44px;padding:12px 18px;font-size:13px}
+body.menu-open .cookie{visibility:hidden}
+@media (prefers-reduced-motion:reduce){.cookie{transition:none}}
+/* note under the contact form */
+.fnote{grid-column:1/-1;margin:0;font:400 13px/1.5 var(--f-body);color:var(--dim)}
+.fnote a{color:var(--film)}
+/* ---------- privacy policy page ---------- */
+.legal-page .flow::before,.legal-page .flow::after{display:none}
+.legal-page .mbtn{text-decoration:none}
+.legal{padding-top:calc(110px + env(safe-area-inset-top,0px))}
+.legal .fwrap{max-width:760px}
+.legal .fh{font-size:clamp(48px,8vw,104px)}
+.legal .updated{margin:0 0 40px;font:600 12px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.legal h2{margin:44px 0 12px;font:400 clamp(28px,3.4vw,38px)/1 var(--f-display);letter-spacing:.02em;text-transform:uppercase}
+.legal p,.legal li{font:300 clamp(16px,1.3vw,18px)/1.7 var(--f-body);color:rgba(241,237,230,.88);margin:0 0 14px}
+.legal ul{margin:0 0 14px;padding-left:1.2em}
+.legal li{margin:0 0 6px}
+.legal b{font-weight:600;color:var(--film)}
+.legal a{color:var(--lamp-2)}
+.legal footer{margin-top:80px}
+.legal footer a{color:inherit}
+.legal footer a:hover{color:var(--lamp-2)}
