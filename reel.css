@@ -381,7 +381,7 @@ footer a:hover{color:var(--lamp-2)}
    Heading fits the longest word ("OPTIMIZACIJA" ≈ 4.2em) inside the screen minus 16px gutters. */
 @media (max-aspect-ratio:9/10),(max-width:699px){
   .hero{width:calc((100vw - 32px) * var(--px,1))}
-  .hero h1{font-size:calc(min((100vw - 32px) / 4.25, 13vh, 100px) * var(--px,1))}
+  .hero h1{font-size:calc(min((100vw - 32px) / var(--fit,3.05), 17vh, 130px) * var(--px,1))} /* --fit = longest word in em, set on pages with longer words */
   .hero .eyebrow,.hero .hint{font-size:calc(14px * var(--px,1))}
   .hero .lead{font-size:calc(17px * var(--px,1))}
 }
