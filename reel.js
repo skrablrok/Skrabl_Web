@@ -377,19 +377,20 @@
 
   /* ---------------- form (optional) ---------------- */
   const form = $('form');
-  // sends in the background through Web3Forms (form action + hidden access_key) and shows the result under the button;
-  // without JS/fetch the form still posts normally (the hidden redirect field brings the visitor back)
+  // sends in the background to the Google Apps Script web app in the form action (it emails the message to the owner's
+  // Gmail) and shows the result under the button; without JS/fetch the form still posts normally
   const fmsg = $('fmsg'), say = (t, ok) => { fmsg.textContent = t; fmsg.className = ok === undefined ? '' : ok ? 'ok' : 'err'; };
   const THANKS = 'Hvala! Sporočilo je poslano, odgovorim vam v najkrajšem možnem času.';
   if (form && window.fetch) form.addEventListener('submit', async e => {
     e.preventDefault();
     if (form.botcheck && form.botcheck.checked) return; // bot
     const btn = form.querySelector('button[type=submit]'), fd = new FormData(form), data = {};
-    for (const [k, v] of fd) if (k !== 'storitve' && k !== 'redirect') data[k] = v;
+    for (const [k, v] of fd) if (k !== 'storitve') data[k] = v;
     data.storitve = fd.getAll('storitve').join(', ') || '—'; // every ticked service, not only the last one
     btn.disabled = true; say('Pošiljam …');
     try {
-      const r = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      // plain-text body keeps this a "simple" request (no CORS preflight, which Apps Script does not answer)
+      const r = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.success === true) { form.reset(); say(THANKS, true); }
       else throw new Error(j.message || r.status);
