@@ -227,7 +227,11 @@ fieldset legend{margin-bottom:12px}
 .chk input:checked + span{background:var(--brand);border-color:var(--brand);color:var(--ink)}
 .chk input:focus-visible + span{outline:2px solid var(--lamp-2);outline-offset:2px}
 .send{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
-#fmsg{font:400 14px/1.4 var(--f-body);color:var(--dim)}
+#fmsg{font:400 15px/1.4 var(--f-body);color:var(--dim)}
+#fmsg.ok{color:#7ddc9a}
+#fmsg.err{color:#ff8a7a}
+.send .btn:disabled{opacity:.6;cursor:wait;transform:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--line);padding-top:24px;font:400 12px/1.6 var(--f-mono);letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
 footer img{width:180px;height:auto;display:block}
 footer nav{display:flex;flex-wrap:wrap;gap:6px 18px}

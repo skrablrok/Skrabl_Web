@@ -377,12 +377,29 @@
 
   /* ---------------- form (optional) ---------------- */
   const form = $('form');
-  if (form && form.dataset.demo !== undefined) form.addEventListener('submit', e => {
+  // sends in the background through the FormSubmit AJAX endpoint and shows the result under the button;
+  // without JS/fetch the form still posts normally (the hidden _next field brings the visitor back)
+  const fmsg = $('fmsg'), say = (t, ok) => { fmsg.textContent = t; fmsg.className = ok === undefined ? '' : ok ? 'ok' : 'err'; };
+  const THANKS = 'Hvala! Sporočilo je poslano, odgovorim vam v najkrajšem možnem času.';
+  if (form && window.fetch) form.addEventListener('submit', async e => {
     e.preventDefault();
-    const m = $('fmsg');
-    if (!form.ime.value.trim() || !/.+@.+\..+/.test(form.email.value)) { m.textContent = 'Vpišite ime in veljaven e-poštni naslov.'; return; }
-    m.textContent = 'Predogled: v živi različici se sporočilo pošlje na skrablrok1@gmail.com.';
+    if (form._honey.value) return; // bot
+    const btn = form.querySelector('button[type=submit]'), fd = new FormData(form), data = {};
+    for (const [k, v] of fd) if (k !== 'storitve') data[k] = v;
+    data.storitve = fd.getAll('storitve').join(', ') || '—'; // every ticked service, not only the last one
+    btn.disabled = true; say('Pošiljam …');
+    try {
+      const r = await fetch(form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && String(j.success) === 'true') { form.reset(); say(THANKS, true); }
+      else if (/activat/i.test(j.message || '')) say('Obrazec še ni aktiviran: na skrablrok1@gmail.com je prišlo e-sporočilo FormSubmit s povezavo »Activate Form«.', false);
+      else throw new Error(j.message || r.status);
+    } catch (err) {
+      console.warn('form:', err);
+      say('Pošiljanje ni uspelo. Pišite mi na skrablrok1@gmail.com ali pokličite +386 30 239 005.', false);
+    } finally { btn.disabled = false; }
   });
+  if (fmsg && /[?&]poslano=1/.test(location.search)) say(THANKS, true);
 
   /* ---------------- loop ---------------- */
   let last = performance.now(), frame = 0, moveTimer, prog = 0, vel = 0;
