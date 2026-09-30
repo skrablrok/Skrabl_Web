@@ -377,22 +377,21 @@
 
   /* ---------------- form (optional) ---------------- */
   const form = $('form');
-  // sends in the background through the FormSubmit AJAX endpoint and shows the result under the button;
-  // without JS/fetch the form still posts normally (the hidden _next field brings the visitor back)
+  // sends in the background through Web3Forms (form action + hidden access_key) and shows the result under the button;
+  // without JS/fetch the form still posts normally (the hidden redirect field brings the visitor back)
   const fmsg = $('fmsg'), say = (t, ok) => { fmsg.textContent = t; fmsg.className = ok === undefined ? '' : ok ? 'ok' : 'err'; };
   const THANKS = 'Hvala! Sporočilo je poslano, odgovorim vam v najkrajšem možnem času.';
   if (form && window.fetch) form.addEventListener('submit', async e => {
     e.preventDefault();
-    if (form._honey.value) return; // bot
+    if (form.botcheck && form.botcheck.checked) return; // bot
     const btn = form.querySelector('button[type=submit]'), fd = new FormData(form), data = {};
-    for (const [k, v] of fd) if (k !== 'storitve') data[k] = v;
+    for (const [k, v] of fd) if (k !== 'storitve' && k !== 'redirect') data[k] = v;
     data.storitve = fd.getAll('storitve').join(', ') || '—'; // every ticked service, not only the last one
     btn.disabled = true; say('Pošiljam …');
     try {
-      const r = await fetch(form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const r = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
       const j = await r.json().catch(() => ({}));
-      if (r.ok && String(j.success) === 'true') { form.reset(); say(THANKS, true); }
-      else if (/activat/i.test(j.message || '')) say('Obrazec še ni aktiviran: na skrablrok1@gmail.com je prišlo e-sporočilo FormSubmit s povezavo »Activate Form«.', false);
+      if (r.ok && j.success === true) { form.reset(); say(THANKS, true); }
       else throw new Error(j.message || r.status);
     } catch (err) {
       console.warn('form:', err);
