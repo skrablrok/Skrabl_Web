@@ -1,0 +1,27 @@
+# SKRABLWEB
+
+> SKRABLWEB je blagovna znamka Roka Škrabla, spletnega razvijalca iz Ljubljane, ki izdeluje spletne strani po meri za podjetja v Ljubljani in po vsej Sloveniji. Vsaka stran je v celoti napisana v kodi po naročilu, hitra, varna in prilagojena vsem napravam – brez mesečnih naročnin.
+
+Ključna dejstva:
+- Storitve: izdelava spletnih strani, izdelava spletnih trgovin, SEO optimizacija, UI/UX dizajn, katalogi in fotografiranje izdelkov, digitalni marketing
+- Cena: izdelava spletne strani od 150 €, 0 € mesečnih naročnin
+- Postopek: spoznavni pogovor → načrtovanje in dizajn → izvedba in razvoj → testiranje in predaja
+- Sodelovanje: preko študentskega servisa
+- Območje: Ljubljana in vsa Slovenija
+- Jezik: slovenščina
+- Kontakt: skrablrok1@gmail.com, +386 30 239 005, kontaktni obrazec na https://skrablweb.si/#kontakt-obr-vse
+
+## Storitve
+- [Izdelava spletnih strani](https://skrablweb.si/stran.html): spletne strani po meri za podjetja, od 150 €
+- [Izdelava spletnih trgovin](https://skrablweb.si/trgovina.html): spletne trgovine z varnimi plačili
+- [SEO optimizacija](https://skrablweb.si/seo.html): boljša vidnost na Googlu
+- [UI/UX dizajn](https://skrablweb.si/dizajn.html): oblikovanje preglednih vmesnikov
+- [Katalogi in fotografiranje](https://skrablweb.si/katalogi.html): produktna fotografija, katalogi in brošure za tisk
+- [Digitalni marketing](https://skrablweb.si/marketing.html): spletno oglaševanje
+
+## Reference
+- [Izdelane spletne strani](https://skrablweb.si/reference.html): BTINOX, Manus Aurea, Slikopleskarstvo Novak, VIP STROJ, Matkom
+
+## Več
+- [O meni](https://skrablweb.si/#o_nas)
+- [Politika zasebnosti](https://skrablweb.si/zasebnost.html)

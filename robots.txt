@@ -1,0 +1,19 @@
+# skrablweb.si – vsi iskalniki in AI asistenti so dobrodošli
+User-agent: *
+Allow: /
+
+# Eksplicitno dovoljeni iskalni in AI boti
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Applebot
+Allow: /
+
+Sitemap: https://skrablweb.si/sitemap.xml
