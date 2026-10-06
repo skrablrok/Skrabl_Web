@@ -26,7 +26,8 @@
     SC = Math.max(0.4, Math.min(2.4, SC));
     root.style.setProperty('--k', portrait ? '0.26' : '0.96');
     P = portrait ? 700 : 900; FAR = portrait ? 1500 : 1900; // portrait: next scene stays hidden until it is close, so texts never stack
-    DPR = Math.min(devicePixelRatio || 1, W < 700 ? 1.5 : 2);
+    // canvas resolution: at most ~4 million pixels, so very large screens are not slowed down by the star field
+    DPR = Math.min(devicePixelRatio || 1, W < 700 ? 1.5 : 2, Math.sqrt(4.2e6 / (W * H)));
     cv.width = W * DPR; cv.height = H * DPR;
     $('stage').style.perspective = (P * SC) + 'px';
 
@@ -49,7 +50,7 @@
     });
     // 3D reels are separate stretches of the page; ordinary sections (.flow) sit between them
     reels.forEach((r, ri) => {
-      r._a = +r.dataset.a; r._b = +r.dataset.b; r._lead = ri === 0 ? 0 : 1;
+      r._a = +r.dataset.a; r._b = +r.dataset.b; r._lead = r.previousElementSibling ? 1 : 0;
       r.style.height = (Math.max(r._lead ? 1.2 : 2, (r._b - r._a + 1) * 1.15)) * 100 + 'vh';
     });
     // chapters in page order: shots inside reels, and flow sections
@@ -62,6 +63,7 @@
     CH.forEach((c, i) => c.n = String(i + 1).padStart(2, '0'));
     placeAnchors();
     buildGeo();
+    lastKey = ''; // positions changed: rerun the scroll-driven effects on the next frame
   }
 
   // scroll position (within its reel) at which shot i is framed
@@ -80,8 +82,11 @@
     });
   }
   // camera progress for the current scroll position, and whether any reel is on screen
+  const hero = document.querySelector('.hero-pin');
+  function heroP() { if (!hero) return -1; const r = hero.getBoundingClientRect(); return Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - innerHeight))); }
   function reelState() {
-    const sy = scrollY, vh = innerHeight; let p = 0, vis = false;
+    const sy = scrollY, vh = innerHeight; let p = reels.length ? KF[reels[0]._a].p : 0, vis = false;
+    if (hero) { const hr = hero.getBoundingClientRect(); if (hr.bottom > 0 && heroP() > 0.48) vis = true; }
     for (const r of reels) {
       const T = r.offsetTop, Hr = r.offsetHeight;
       if (T < sy + vh && T + Hr > sy) vis = true;
@@ -150,17 +155,26 @@
     const dz = Math.abs(C.z - lastZ); lastZ = C.z;
     const streak = RM ? 0 : Math.min(900, dz * 7);
     cx.lineCap = 'round';
+    // stars are grouped by colour, opacity and width (rounded) and drawn with one stroke per group instead of one each
+    const groups = new Map();
     for (let i = 0; i < starN; i++) {
       const o = i * 4; toCam(stars[o], stars[o + 1], stars[o + 2]);
       const z = out[2]; if (z > P - 60 || z < -12000) continue;
       const s = SC * P / (P - z), X = W / 2 + out[0] * s, Y = H / 2 + out[1] * s;
       if (X < -50 || X > W + 50 || Y < -50 || Y > H + 50) continue;
-      const a = fog(z) * (0.35 + stars[o + 3] * 0.65);
-      cx.strokeStyle = stars[o + 3] > 0.85 ? `rgba(255,170,80,${a})` : `rgba(241,237,230,${a})`;
-      cx.lineWidth = Math.max(0.6, s * 2.2);
-      cx.beginPath(); cx.moveTo(X, Y);
-      if (streak > 4) { toCam(stars[o], stars[o + 1], stars[o + 2] + streak); const z2 = Math.min(out[2], P - 60), s2 = SC * P / (P - z2); cx.lineTo(W / 2 + out[0] * s2, H / 2 + out[1] * s2); }
-      else cx.lineTo(X + 0.01, Y);
+      const a = Math.round(fog(z) * (0.35 + stars[o + 3] * 0.65) * 12) / 12;
+      if (a <= 0) continue;
+      const key = (stars[o + 3] > 0.85 ? 'g' : 'w') + a + '|' + Math.round(Math.max(0.6, s * 2.2) * 2) / 2;
+      let seg = groups.get(key); if (!seg) groups.set(key, seg = []);
+      if (streak > 4) { toCam(stars[o], stars[o + 1], stars[o + 2] + streak); const z2 = Math.min(out[2], P - 60), s2 = SC * P / (P - z2); seg.push(X, Y, W / 2 + out[0] * s2, H / 2 + out[1] * s2); }
+      else seg.push(X, Y, X + 0.01, Y);
+    }
+    for (const [key, seg] of groups) {
+      const [ca, w] = key.split('|');
+      cx.strokeStyle = (ca[0] === 'g' ? 'rgba(255,170,80,' : 'rgba(241,237,230,') + ca.slice(1) + ')';
+      cx.lineWidth = +w;
+      cx.beginPath();
+      for (let k = 0; k < seg.length; k += 4) { cx.moveTo(seg[k], seg[k + 1]); cx.lineTo(seg[k + 2], seg[k + 3]); }
       cx.stroke();
     }
     for (const el of fxs) {
@@ -207,9 +221,11 @@
       const o = Math.max(0, Math.min(1, (P * 0.2 - zc) / (P * 0.35))) * Math.max(0, Math.min(1, (zc + el._far) / 600));
       if (o < 0.01) { if (el._vis !== false) { el.style.visibility = 'hidden'; el._vis = false; } continue; }
       if (el._vis !== true) { el.style.visibility = 'visible'; el._vis = true; }
-      el.style.opacity = o.toFixed(3);
-      el.style.pointerEvents = o > 0.6 ? 'auto' : 'none';
-      el.style.transform = `translate3d(${x}px,${y}px,${z}px) rotateY(${el._ry}deg) translate(-50%,-50%)`;
+      // write styles only when they change: unchanged writes still make the browser recalculate styles every frame
+      const op = o.toFixed(2), pe = o > 0.6 ? 'auto' : 'none', tf = `translate3d(${x}px,${y}px,${z}px) rotateY(${el._ry}deg) translate(-50%,-50%)`;
+      if (el._op !== op) el.style.opacity = el._op = op;
+      if (el._pe !== pe) el.style.pointerEvents = el._pe = pe;
+      if (el._tf !== tf) el.style.transform = el._tf = tf;
     }
   }
 
@@ -221,7 +237,8 @@
   function hud(p) {
     const pg = Math.max(0, Math.min(1, scrollY / Math.max(1, root.scrollHeight - innerHeight)));
     const f = Math.round(pg * TOTAL);
-    if (tc) tc.firstChild.nodeValue = `00:${pad(Math.floor(f / 1500))}:${pad(Math.floor(f / 25) % 60)}:${pad(f % 25)} `;
+    const tcs = `00:${pad(Math.floor(f / 1500))}:${pad(Math.floor(f / 25) % 60)}:${pad(f % 25)} `;
+    if (tc && tc.firstChild.nodeValue !== tcs) tc.firstChild.nodeValue = tcs;
     let ci = 0, mid = scrollY + innerHeight * 0.5;
     CH.forEach((c, i) => {
       if (c.flow) { if (c.flow.offsetTop <= mid) ci = i; }
@@ -358,6 +375,35 @@
     }
   }
 
+  /* ---------------- HERO · Š scene ---------------- */
+  const seg = (p, a, b) => Math.max(0, Math.min(1, (p - a) / (b - a)));
+  const eio = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  let hkRect = null;
+  const hst = hero && hero.querySelector('.hstage'), hbig = hero && hero.querySelector('.hbig'), hhk = hero && hero.querySelector('.hhk path');
+  if (hero) { if (RM) hero.classList.add('go'); else requestAnimationFrame(() => hero.classList.add('go')); }
+  function heroRun() {
+    if (!hero || RM) return;
+    const r = hero.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+    const p = heroP(), vw = innerWidth, vh = innerHeight;
+    hero.classList.toggle('scrolled', p > 0.002);
+    const a = eio(seg(p, 0, .3)), b = eio(seg(p, .26, .5)), c = seg(p, .5, .97);
+    hst.style.setProperty('--a', a.toFixed(4));
+    if (b <= 0.001 || !hkRect) { const q = hhk.getBoundingClientRect(); if (q.width > 0) hkRect = { x: q.left, y: q.top, w: q.width }; }
+    if (!hkRect) return;
+    const tw = Math.min(vw * 0.46, 520), x = hkRect.x + ((vw - tw) / 2 - hkRect.x) * b, y = hkRect.y + ((vh / 2 - tw * 23 / 42 * 0.78) - hkRect.y) * b, w = hkRect.w + (tw - hkRect.w) * b;
+    hst.style.setProperty('--bon', b > 0.001 ? 1 : 0);
+    hbig.style.width = w + 'px'; hbig.style.height = (w * 23 / 42) + 'px';
+    hbig.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0)`;
+    // the solid háček hands over to a háček-shaped window that grows until the 3D reel fills the screen
+    hbig.style.opacity = b > 0.001 ? (1 - seg(c, 0, .12)).toFixed(3) : 0;
+    if (c > 0) {  // grow around the middle of the chevron's band (78% down its height), not its empty notch
+      const hs = tw * Math.pow(70, eio(c));
+      hst.classList.add('hole'); hst.style.setProperty('--hs', hs.toFixed(1) + 'px');
+      hst.style.setProperty('--hp', `${(vw / 2 - hs / 2).toFixed(1)}px ${(vh / 2 - hs * 23 / 42 * 0.78).toFixed(1)}px`);
+    }
+    else hst.classList.remove('hole');
+  }
+
   /* ---------------- menu ---------------- */
   const menu = $('menu'), openBtn = $('menuOpen'), closeBtn = $('menuClose');
   function setMenu(on) {
@@ -371,9 +417,6 @@
   addEventListener('keydown', e => { if (e.key === 'Escape' && body.classList.contains('menu-open')) setMenu(false); });
   menu.addEventListener('click', e => { const a = e.target.closest('a'); if (a) body.classList.remove('menu-open'); });
 
-  /* ---------------- grain ---------------- */
-  const gc = $('grain'), g = gc.getContext('2d'), gi = g.createImageData(gc.width, gc.height);
-  function grain() { const d = gi.data; for (let i = 0; i < d.length; i += 4) { const v = Math.random() * 255; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; } g.putImageData(gi, 0, 0); }
 
   /* ---------------- form (optional) ---------------- */
   const form = $('form');
@@ -387,6 +430,8 @@
     const btn = form.querySelector('button[type=submit]'), fd = new FormData(form), data = {};
     for (const [k, v] of fd) if (k !== 'storitve') data[k] = v;
     data.storitve = fd.getAll('storitve').join(', ') || '—'; // every ticked service, not only the last one
+    data.paket = data.paket || '—';
+    if (data.paket !== '—') data.sporocilo = 'IZBRANI PAKET: ' + data.paket + '\n\n' + (data.sporocilo || ''); // also in the message, so it shows in the e-mail whatever template the script uses
     btn.disabled = true; say('Pošiljam …');
     try {
       // plain-text body keeps this a "simple" request (no CORS preflight, which Apps Script does not answer)
@@ -417,7 +462,7 @@
   })();
 
   /* ---------------- loop ---------------- */
-  let last = performance.now(), frame = 0, moveTimer, prog = 0, vel = 0;
+  let last = performance.now(), frame = 0, moveTimer, prog = 0, vel = 0, lastAb = '', lastVis = null, lastKey = '';
   addEventListener('scroll', () => { body.classList.add('moving'); clearTimeout(moveTimer); moveTimer = setTimeout(() => body.classList.remove('moving'), 180); }, { passive: true });
   function tick(t) {
     const dt = Math.min(64, t - last); last = t; now = t;
@@ -426,15 +471,20 @@
     prog = (RM || !st.vis) ? target : prog + (target - prog) * Math.min(1, dt / 1000 * 4.5);
     if (Math.abs(target - prog) < 1e-5) prog = target;
     vel = vel * 0.85 + (prog - prev) * 0.15;
-    const ab = RM ? 0 : Math.max(-10, Math.min(10, vel * 9000));
-    root.style.setProperty('--ab', ab.toFixed(2));
-    body.classList.toggle('ab-on', Math.abs(ab) > 0.4);
-    stage.style.visibility = st.vis ? 'visible' : 'hidden';
-    if (st.vis) { camAt(prog); draw(); placeObjects(); }
-    hud(prog); flowFx();
-    const cr = credits.getBoundingClientRect();
-    body.classList.toggle('rolling', cr.top < innerHeight * 0.45);
-    if (!RM && ++frame % 3 === 0) grain();
+    // chromatic edge on headings: the value lives on #world (only its headings use it) and is written only when it changes
+    const ab = RM ? 0 : Math.max(-10, Math.min(10, vel * 9000)), abs = Math.abs(ab) > 0.4 ? ab.toFixed(1) : '0';
+    if (abs !== lastAb) { world.style.setProperty('--ab', abs); body.classList.toggle('ab-on', abs !== '0'); lastAb = abs; }
+    if (st.vis !== lastVis) { stage.style.visibility = st.vis ? 'visible' : 'hidden'; lastVis = st.vis; }
+    // scroll-driven work only when the page actually scrolled or resized
+    const key = scrollY + '|' + innerHeight + '|' + innerWidth, scrolled = key !== lastKey;
+    // idle (nothing scrolled, camera settled): the slow background drift runs at 30 fps instead of 60
+    frame++;
+    if (st.vis && (scrolled || prog !== target || frame % 2 === 0)) { camAt(prog); draw(); placeObjects(); }
+    if (scrolled) {
+      lastKey = key;
+      hud(prog); flowFx(); heroRun();
+      body.classList.toggle('rolling', credits.getBoundingClientRect().top < innerHeight * 0.45);
+    }
     requestAnimationFrame(tick);
   }
 
@@ -444,3 +494,55 @@
   if (location.hash) { const tgt = document.getElementById(location.hash.slice(1)); if (tgt) requestAnimationFrame(() => { tgt.scrollIntoView(); prog = reelState().p; }); }
   requestAnimationFrame(tick);
 })();
+
+/* ---------- SOFT SCROLL — mouse wheel / trackpad and in-page links glide instead of jumping (desktop only;
+   touch screens keep their native scrolling, reduced-motion users keep normal scrolling) ---------- */
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  const root = document.scrollingElement || document.documentElement;
+  let target = scrollY, cur = scrollY, raf = 0, last = 0;
+  const maxY = () => root.scrollHeight - innerHeight, clampY = v => Math.max(0, Math.min(maxY(), v));
+  function step(t) {
+    const dt = last ? Math.min(64, t - last) : 16.67; last = t;
+    cur += (target - cur) * (1 - Math.pow(0.9, dt / 16.67));      // ease towards the target, same feel at any refresh rate
+    if (Math.abs(target - cur) < 0.4) cur = target;
+    window.scrollTo({ top: cur, behavior: 'instant' });
+    if (cur !== target) raf = requestAnimationFrame(step); else { raf = 0; last = 0; }
+  }
+  function glide(y) { if (!raf) cur = scrollY; target = clampY(y); if (!raf) raf = requestAnimationFrame(step); }
+  function innerScroller(el) {
+    for (; el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
+      const s = getComputedStyle(el);
+      if (/(auto|scroll)/.test(s.overflowY) && el.scrollHeight > el.clientHeight + 1) return el;
+    }
+    return null;
+  }
+  addEventListener('wheel', e => {
+    if (e.ctrlKey || e.defaultPrevented || document.body.classList.contains('menu-open')) return;
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || innerScroller(e.target)) return;
+    e.preventDefault();
+    const d = e.deltaMode === 1 ? e.deltaY * 40 : e.deltaMode === 2 ? e.deltaY * innerHeight : e.deltaY;
+    glide((raf ? target : scrollY) + d);
+  }, { passive: false });
+  // keyboard, scrollbar dragging and find-in-page still scroll natively; keep in sync with them
+  addEventListener('scroll', () => { if (!raf) target = cur = scrollY; }, { passive: true });
+  addEventListener('resize', () => { target = clampY(target); });
+  document.addEventListener('click', e => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const a = e.target.closest && e.target.closest('a[href*="#"]'); if (!a) return;
+    const u = new URL(a.getAttribute('href'), location.href);
+    if (u.pathname !== location.pathname || u.search !== location.search || !u.hash || u.hash === '#') return;
+    const el = document.getElementById(decodeURIComponent(u.hash.slice(1))); if (!el) return;
+    e.preventDefault(); history.pushState(null, '', u.hash);
+    glide(el.getBoundingClientRect().top + scrollY);
+  });
+})();
+
+/* ---------- CENIK · "Izberi paket" selects that package in the contact form (it is sent with the e-mail) ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('[data-paket]'); if (!b) return;
+  const r = [...document.querySelectorAll('input[name="paket"]')].find(x => x.value === b.dataset.paket); if (r) r.checked = true;
+  const sv = b.dataset.sv && document.getElementById(b.dataset.sv); if (sv) sv.checked = true;
+  const fs = document.getElementById('paket');
+  if (fs) { fs.classList.remove('flash'); void fs.offsetWidth; fs.classList.add('flash'); }
+});

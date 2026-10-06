@@ -145,7 +145,7 @@ body.ab-on .ab{text-shadow:calc(var(--ab,0)*1px) 0 rgba(255,74,61,.55),calc(var(
 .short .lap figcaption{padding:0;margin:0}
 
 /* ---------- film layers ---------- */
-#grain{position:fixed;inset:-10%;width:120%;height:120%;pointer-events:none;opacity:.045;image-rendering:pixelated;z-index:2}
+#grain{display:none} /* film grain removed: calm, clean background */
 .vignette{position:fixed;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.72) 100%)}
 
 /* ---------- HUD ---------- */
@@ -427,3 +427,113 @@ body.menu-open .cookie{visibility:hidden}
 .legal footer{margin-top:80px}
 .legal footer a{color:inherit}
 .legal footer a:hover{color:var(--lamp-2)}
+
+/* ---------- HERO · Š — the logo is drawn on its construction grid, then the háček becomes a window into the 3D reel ---------- */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.flow.hero-pin{padding:0;height:300vh;background:transparent}
+.flow.hero-pin::before,.flow.hero-pin::after{display:none}
+.hstage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:radial-gradient(110% 80% at 50% 45%,#0c1736 0%,var(--ink) 62%);display:grid;place-items:center}
+.hstage.hole{-webkit-mask:var(--hkmask) var(--hp,center)/var(--hs,0px) auto no-repeat,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:var(--hkmask) var(--hp,center)/var(--hs,0px) auto no-repeat exclude,linear-gradient(#000 0 0)}
+.hwrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;width:100%}
+.hwrap .kick{margin-bottom:clamp(6px,1.4vh,14px)}
+.hlogo{display:block;width:min(92vw,1120px);height:auto;overflow:visible}
+.hgrid path{stroke:rgba(241,237,230,.1);stroke-width:1;vector-effect:non-scaling-stroke;fill:none}
+.hdims path{stroke:rgba(240,112,48,.55);stroke-width:1;vector-effect:non-scaling-stroke;fill:none}
+.hdims text{font:400 10px var(--f-mono);fill:rgba(241,237,230,.5);letter-spacing:.06em}
+.hl path{fill:none;stroke:var(--film);stroke-width:17;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:1 1;stroke-dashoffset:1}
+.hhk{opacity:0}
+.hhk path{fill:var(--lamp)}
+.hgrid,.hdims{opacity:0}
+.hsub{font:400 clamp(30px,5.2vw,78px)/.95 var(--f-display);text-transform:uppercase;letter-spacing:.02em;margin:clamp(6px,1.6vh,18px) 0 .25em;opacity:0;transform:translateY(24px)}
+.hsub em{font-style:normal;color:var(--lamp)}
+.hlead{font:300 clamp(15px,1.3vw,19px)/1.55 var(--f-body);opacity:0;max-width:44ch;margin:0 auto;transform:translateY(20px);color:rgba(241,237,230,.88)}
+.hcta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:clamp(14px,3vh,28px);opacity:0;transform:translateY(20px)}
+.hcta .btn{font-size:15px;padding:14px 22px}
+.hwrap .kick{opacity:0}
+.hcue{position:absolute;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font:600 10px/1 var(--f-mono);letter-spacing:.3em;text-transform:uppercase;color:var(--dim);opacity:0;z-index:2}
+.hcue i{width:1.5px;height:36px;background:linear-gradient(var(--lamp),transparent);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(.2);transform-origin:bottom}}
+.hbig{position:absolute;left:0;top:0;width:10px;height:6px;background:var(--lamp);-webkit-mask:var(--hkmask) center/100% 100% no-repeat;mask:var(--hkmask) center/100% 100% no-repeat;opacity:0;z-index:3;pointer-events:none;will-change:transform,width,height}
+/* load sequence */
+.hero-pin.go .hgrid{animation:hfade 1.1s ease-out .05s forwards}
+.hero-pin.go .hdims{animation:hfade 1s ease-out .9s forwards}
+.hero-pin.go .hl path{animation:hdraw 1s cubic-bezier(.65,0,.25,1) forwards;animation-delay:calc(.2s + var(--i) * .085s)}
+.hero-pin.go .hhk{animation:hdrop .8s cubic-bezier(.34,1.56,.64,1) 1.35s forwards}
+.hero-pin.go .hwrap .kick{animation:hup .8s ease-out .15s forwards}
+.hero-pin.go .hsub{animation:hup .9s cubic-bezier(.2,.75,.15,1) 1.6s forwards}
+.hero-pin.go .hlead{animation:hup .9s cubic-bezier(.2,.75,.15,1) 1.78s forwards}
+.hero-pin.go .hcta{animation:hup .9s cubic-bezier(.2,.75,.15,1) 1.95s forwards}
+.hero-pin.go .hcue{animation:hfade .8s ease-out 2.4s forwards}
+@keyframes hfade{to{opacity:1}}
+@keyframes hdraw{to{stroke-dashoffset:0}}
+@keyframes hdrop{0%{opacity:0;transform:translateY(-70px)}35%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes hup{to{opacity:1;transform:none}}
+/* scroll-driven part (vars set by reel.js): a = text leaves + letters part, b = háček travels to centre */
+.hero-pin.go .hwrap{transform:translateY(calc(var(--a,0) * -4vh)) scale(calc(1 + var(--a,0) * .08))}
+.hero-pin .hl{transform:translateX(calc(var(--dx) * var(--a,0) * 60px));opacity:calc(1 - var(--a,0) * 1.15);transition:none}
+.hero-pin.scrolled .hgrid,.hero-pin.scrolled .hdims{animation:none;opacity:calc(1 - var(--a,0) * 1.6)}
+.hero-pin.scrolled .hsub,.hero-pin.scrolled .hlead,.hero-pin.scrolled .hcta,.hero-pin.scrolled .hwrap .kick,.hero-pin.scrolled .hcue{animation:none;opacity:calc(1 - var(--a,0) * 2.2);transform:translateY(calc(var(--a,0) * -30px))}
+.hero-pin.scrolled .hl path{animation:none;stroke-dashoffset:0}
+.hero-pin.scrolled .hhk{animation:none;opacity:calc(1 - var(--bon,0))}
+@media (prefers-reduced-motion:reduce){
+  .flow.hero-pin{height:auto}.hstage{position:relative;height:auto;min-height:100svh;padding:120px 0 80px}
+  .hl path{stroke-dashoffset:0}.hhk,.hgrid,.hdims,.hsub,.hlead,.hcta,.hwrap .kick,.hcue{opacity:1;transform:none;animation:none}.hbig{display:none}
+}
+
+/* ---------- RESPONSIVE PASS — every screen size: short landscape phones, tablets, very large screens ---------- */
+#tc{white-space:nowrap}
+@media (max-width:1000px){#tc span{display:none}}
+.hlogo{width:min(92vw,1400px,125svh)}
+@media (min-width:1800px){.hsub{font-size:clamp(78px,4.4vw,110px)}.hlead{font-size:21px}.hcta .btn{font-size:17px;padding:17px 28px}}
+@media (max-height:540px) and (orientation:landscape){
+  .hlogo{width:min(64vw,100svh)}
+  .hwrap .kick{margin-bottom:2px;font-size:10px}
+  .hsub{font-size:clamp(24px,4.2vw,40px);margin:2px 0 .15em}
+  .hlead{display:none}
+  .hcta{margin-top:10px}.hcta .btn{padding:10px 16px;font-size:13px;min-height:40px}
+  .hcue{display:none}
+  .cookie{width:min(340px,calc(100vw - 24px));padding:10px 10px 10px 14px}.cookie p{font-size:12px;line-height:1.35}.cookie b{font-size:10px;margin-bottom:3px}.cookie .btn{min-height:38px;padding:9px 14px;font-size:12px}
+}
+@media (max-width:520px){
+  .cookie{left:12px;right:12px;width:auto;gap:10px;padding:10px 10px 10px 14px}
+  .cookie p{font-size:12.5px;line-height:1.4}.cookie b{font-size:10.5px;margin-bottom:4px}
+  .cookie .btn{min-height:40px;padding:10px 14px;font-size:12px}
+}
+/* hero kicker above the logo always on one line */
+.hwrap .kick{white-space:nowrap;max-width:100%}
+@media (max-width:600px){.hwrap .kick{letter-spacing:.14em;font-size:min(12px,calc((100vw - 32px) / 28))}}
+
+/* ---------- CENIK · price list ---------- */
+.pgrid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:40px;align-items:stretch}
+.pcard{min-height:0;padding:32px 30px 30px}
+.pcard:hover{transform:translateY(-6px)}
+.pcard h3{font-size:clamp(30px,2.6vw,40px)}
+.pprice{display:flex;align-items:flex-end;gap:10px;margin:6px 0 16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.pprice b{font:400 clamp(64px,6.4vw,96px)/.85 var(--f-display);font-variant-numeric:tabular-nums;color:var(--film)}
+.pprice b sup{font-size:.4em;vertical-align:.95em;color:var(--lamp);margin-left:.04em}
+.pprice b.txt{font-size:clamp(44px,4.2vw,64px);line-height:.95;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pprice small{font:600 12px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim);padding-bottom:.6em}
+.pcard > p{margin-bottom:18px}
+.plist{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:10px;font:400 15px/1.4 var(--f-body)}
+.plist li{position:relative;padding-left:26px}
+.plist li::before{content:"";position:absolute;left:2px;top:.32em;width:12px;height:7px;border-left:2px solid var(--lamp);border-bottom:2px solid var(--lamp);transform:rotate(-45deg)}
+.plist li.no{color:var(--dim)}
+.plist li.no::before{width:12px;height:0;top:.65em;border-left:0;border-bottom:2px solid var(--dim);transform:none}
+.pcard .btn{margin-top:auto;align-self:flex-start}
+.pcard.hot{border-color:rgba(240,112,48,.65);background:linear-gradient(160deg,rgba(240,112,48,.16),rgba(241,237,230,.02))}
+@media (max-width:980px){.pgrid3{grid-template-columns:1fr;max-width:560px}}
+.pcard .ic{text-transform:uppercase;letter-spacing:.18em}
+.pcard .btn{font-size:14px;padding:14px 22px;min-height:48px}
+@media (min-width:981px){.pcard h3{min-height:1.9em}}
+.pprice{box-sizing:border-box;min-height:calc(clamp(64px,6.4vw,96px) * .85 + 19px)}
+.pprice b.txt{line-height:.85}
+
+/* package choice in the contact form */
+fieldset.pak{border-radius:14px;transition:box-shadow .5s}
+fieldset.pak.flash{animation:pakflash 1.6s ease-out}
+@keyframes pakflash{0%,30%{box-shadow:0 0 0 2px var(--lamp),0 0 0 10px rgba(240,112,48,.18)}100%{box-shadow:0 0 0 0 transparent}}
+
+/* cenik: note about extras */
+.pnote{display:flex;gap:14px;align-items:flex-start;max-width:760px;margin:26px 0 0;padding:18px 20px;border:1px dashed rgba(240,112,48,.55);border-radius:12px;font:300 15px/1.55 var(--f-body);color:rgba(241,237,230,.88)}
+.pnote b{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--brand);color:var(--ink);font:700 18px/1 var(--f-body)}
+.pnote strong{font-weight:600;color:var(--film)}

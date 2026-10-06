@@ -23,13 +23,13 @@
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png?v=2">
 <link rel="manifest" href="/site.webmanifest?v=2">
 <meta name="theme-color" content="#050a23">
-<link rel="stylesheet" href="reel.css?v=202609302147">
+<link rel="stylesheet" href="reel.css?v=202610070115">
 </head>
 <body data-dur="120">
 <div id="stage">
   <canvas id="bg" aria-hidden="true"></canvas>
   <div id="world">
-<div class="obj hero" data-shot data-x="0" data-y="0" data-z="-500" data-d="500" data-md="420" data-chapter="Uvod"><div class="eyebrow">SKRABLWEB predstavlja</div><h1 class="ab">Spletne strani<span class="gt">po meri</span></h1><div class="hint">Scrollaj za predvajanje ↓</div></div>
+<div class="obj hero" style="display:none" data-shot data-x="0" data-y="0" data-z="-500" data-d="500" data-md="420" data-chapter="Uvod"><div class="eyebrow">SKRABLWEB predstavlja</div><h1 class="ab">Spletne strani<span class="gt">po meri</span></h1><div class="hint">Scrollaj za predvajanje ↓</div></div>
 <div class="obj tag ab" data-shot data-x="0" data-y="0" data-z="-2300" data-d="650" data-md="500">Dizajn <span class="dot">·</span> Razvoj <span class="dot">·</span> Optimizacija <span class="dot">·</span> SEO <span class="dot">·</span> Hitro<br><span class="gt">Moderna spletna rešitev za vaše podjetje</span></div>
 <i class="fx" data-type="ico" data-z="-3100" data-r="460" data-mr="360"></i>
 <div class="obj sect" data-shot data-x="0" data-y="-170" data-z="-4300" data-d="700" data-md="600" data-chapter="Reference" data-anchor="reference" data-my="-60" data-fy="0"><h2 class="ab">Reference</h2><p>Vsaka stran, ki je predstavljena, je v celoti narejena v kodi po naročilu. Brez potrebnega mesečnega plačila!</p></div>
@@ -43,7 +43,6 @@
 <i class="fx" data-type="floor" data-z="-31200" data-y="480"></i>
   </div>
 </div>
-<canvas id="grain" width="160" height="160" aria-hidden="true"></canvas>
 <div class="vignette" aria-hidden="true"></div>
 
 <header class="hud">
@@ -59,19 +58,38 @@
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Izbira scene" aria-hidden="true">
   <button class="mbtn close" id="menuClose" type="button">Zapri ✕</button>
   <div class="kicker">Izbira scene</div>
-  <nav><a href="index.html" aria-current=page><span>00</span><b>Domov</b></a><a href="index.html#o_nas"><span>01</span><b>O meni</b></a><a href="stran.html"><span>02</span><b>Izdelava spletnih strani</b></a><a href="trgovina.html"><span>03</span><b>Izdelava spletne trgovine</b></a><a href="dizajn.html"><span>04</span><b>UI/UX dizajn</b></a><a href="katalogi.html"><span>05</span><b>Katalogi in fotografiranje</b></a><a href="seo.html"><span>06</span><b>SEO optimizacija</b></a><a href="marketing.html"><span>07</span><b>Digitalni marketing</b></a><a href="reference.html"><span>08</span><b>Reference</b></a><a href="index.html#kontakt-obr-vse"><span>09</span><b>Kontakt</b></a></nav>
+  <nav><a href="index.html" aria-current=page><span>00</span><b>Domov</b></a><a href="index.html#o_nas"><span>01</span><b>O meni</b></a><a href="stran.html"><span>02</span><b>Izdelava spletnih strani</b></a><a href="trgovina.html"><span>03</span><b>Izdelava spletne trgovine</b></a><a href="dizajn.html"><span>04</span><b>UI/UX dizajn</b></a><a href="katalogi.html"><span>05</span><b>Katalogi in fotografiranje</b></a><a href="seo.html"><span>06</span><b>SEO optimizacija</b></a><a href="marketing.html"><span>07</span><b>Digitalni marketing</b></a><a href="reference.html"><span>08</span><b>Reference</b></a><a href="index.html#cenik"><span>09</span><b>Cenik</b></a><a href="index.html#kontakt-obr-vse"><span>10</span><b>Kontakt</b></a></nav>
   <div class="contact"><a href="mailto:skrablrok1@gmail.com">skrablrok1@gmail.com</a> · <a href="tel:+38630239005">+386 30 239 005</a></div>
 </div>
 
 <main id="main" aria-label="SKRABLWEB | Izdelava spletnih strani po meri">
-<div class="reel" data-a="0" data-b="7" aria-hidden="true"></div>
+<section class="flow hero-pin" id="uvod" data-chapter="Uvod">
+  <div class="hstage" style="--hkmask:url(&quot;data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-21 -31 42 23'%3E%3Cpath d='M-21,-31 L0,-18 L21,-31 L21,-21 L0,-8 L-21,-21 Z'/%3E%3C/svg%3E&quot;)">
+    <h1 class="sr">SKRABLWEB · spletne strani po meri</h1>
+    <div class="hwrap">
+      <span class="kick hk-in">Rok Škrabl · izdelava spletnih strani</span>
+      <svg class="hlogo" viewBox="-70 -80 875 250" aria-hidden="true">
+  <defs><clipPath id="hclip"><rect x="-20" y="0" width="775" height="100"/></clipPath></defs>
+  <g class="hgrid"><path d="M-60,0 H795"/><path d="M-60,8.5 H795"/><path d="M-60,50 H795"/><path d="M-60,91.5 H795"/><path d="M-60,100 H795"/><path d="M0,-70 V170"/><path d="M8.5,-70 V170"/><path d="M63.5,-70 V170"/><path d="M72,-70 V170"/><path d="M735,-70 V170"/></g><g class="hdims"><path d="M-26,0 V100 M-31,0 H-21 M-31,100 H-21"/><path d="M0,128 H17 M0,123 V133 M17,123 V133"/><path d="M-14,27.5 L27.5,-14"/><text x="-34" y="50" transform="rotate(-90 -34 50)" text-anchor="middle">100</text><text x="8.5" y="148" text-anchor="middle">17</text><text x="30" y="-16">45°</text></g>
+  <g class="hletters" clip-path="url(#hclip)"><g class="hl" style="--i:0;--dx:-3.60"><path d="M63,8.5 H22 L8.5,21.5 V37 L22,50 H50 L63.5,63 V78.5 L50,91.5 H8.5" transform="translate(0.0,0)" pathLength="1"/></g><g class="hl" style="--i:1;--dx:-2.70"><path d="M8.5,0 V100 M64,1 L21,50 L64,99" transform="translate(84.0,0)" pathLength="1"/></g><g class="hl" style="--i:2;--dx:-1.80"><path d="M8.5,100 V8.5 H49 L62,21.5 V37 L49,50 H8.5 M37,50 L64,99" transform="translate(166.0,0)" pathLength="1"/></g><g class="hl" style="--i:3;--dx:-0.90"><path d="M8.5,100 V21.5 L21.5,8.5 H49 L62,21.5 V100 M8.5,60 H62" transform="translate(248.0,0)" pathLength="1"/></g><g class="hl" style="--i:4;--dx:0.00"><path d="M8.5,50 H50 L63,63 V78.5 L50,91.5 H8.5 V8.5 H44 L57,21.5 V37 L44,50" transform="translate(331.0,0)" pathLength="1"/></g><g class="hl" style="--i:5;--dx:0.90"><path d="M8.5,0 V91.5 H60" transform="translate(415.0,0)" pathLength="1"/></g><g class="hl" style="--i:6;--dx:1.80"><path d="M8.5,0 V100 M8.5,91.5 L42,52 L75.5,91.5 M75.5,100 V0" transform="translate(489.0,0)" pathLength="1"/></g><g class="hl" style="--i:7;--dx:2.70"><path d="M62,8.5 H8.5 V91.5 H62 M8.5,50 H52" transform="translate(585.0,0)" pathLength="1"/></g><g class="hl" style="--i:8;--dx:3.60"><path d="M8.5,50 H50 L63,63 V78.5 L50,91.5 H8.5 V8.5 H44 L57,21.5 V37 L44,50" transform="translate(663.0,0)" pathLength="1"/></g></g>
+  <g class="hhk" style="--hx:35.50px"><path d="M-21,-31 L0,-18 L21,-31 L21,-21 L0,-8 L-21,-21 Z" transform="translate(35.50,0)"/></g>
+</svg>
+      <p class="hsub"><span class="w1">Spletne strani</span> <em>po meri</em></p>
+      <p class="hlead">Vsaka stran je v celoti napisana v kodi, po naročilu. Brez mesečnih naročnin.</p>
+      <div class="hcta"><a class="btn" href="#kontakt-obr-vse">Sodelujmo</a><a class="btn ghost" href="#reference">Poglejte reference</a></div>
+    </div>
+    <div class="hcue" aria-hidden="true"><i></i>Scrollaj</div>
+    <div class="hbig" aria-hidden="true"></div>
+  </div>
+</section>
+<div class="reel" data-a="1" data-b="7" aria-hidden="true"></div>
 <section class="flow marquee" aria-hidden="true"><div class="mrow " data-dir="-1">Spletne strani · <span class="g">po meri</span> · SKRABLWEB · Spletne strani · <span class="g">po meri</span> · SKRABLWEB · Spletne strani · <span class="g">po meri</span> · SKRABLWEB · Spletne strani · <span class="g">po meri</span> · SKRABLWEB · </div><div class="mrow o" data-dir="1">Dizajn · Razvoj · Optimizacija · SEO · Hitro · Dizajn · Razvoj · Optimizacija · SEO · Hitro · Dizajn · Razvoj · Optimizacija · SEO · Hitro · Dizajn · Razvoj · Optimizacija · SEO · Hitro · </div><div class="mrow " data-dir="-1">Moderna spletna rešitev za <span class="g">vaše podjetje</span> · Moderna spletna rešitev za <span class="g">vaše podjetje</span> · Moderna spletna rešitev za <span class="g">vaše podjetje</span> · Moderna spletna rešitev za <span class="g">vaše podjetje</span> · </div></section>
 <section class="flow statement">
   <div class="fwrap"><span class="kick">SKRABLWEB</span><p class="fillwords">Vsaka stran je v celoti <em>napisana v kodi</em>, po naročilu. Brez mesečnih naročnin, hitra, varna in <em>prilagojena vsem napravam</em>.</p></div>
 </section>
 <section class="flow zoom">
   <div class="zpin">
-    <div class="zframe"><img src="img/sodelovanje.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></div>
+    <div class="zframe"><img src="img/sodelovanje.webp?v=2" alt="" width="1536" height="1024" loading="lazy" decoding="async"></div>
     <div class="ztext" aria-hidden="true"><span class="zl">Spletne</span><span class="zr">strani</span></div>
     <div class="zreveal"><span class="kick">Od ideje do objave</span><h2>Po meri <span class="gt">vašega podjetja</span></h2><p>Od prve ideje do zadnjega klika ustvarjamo spletne strani, trgovine in oglase, ki povečujejo vašo prodajo.</p><ul class="zl2"><li>Dizajn</li><li>Razvoj</li><li>Optimizacija</li><li>SEO</li><li>Hitro</li></ul><a class="btn" href="#kontakt-obr-vse">Sodelujmo</a></div>
   </div>
@@ -86,7 +104,7 @@
 </section>
 <section class="flow" id="o_nas" data-chapter="O meni">
   <div class="fwrap split">
-    <div class="fimg" data-par=".12"><img class="rv" src="img/onas.webp" alt="Primeri spletnih strani, ki sem jih izdelal" width="1385" height="1661" loading="lazy" decoding="async"></div>
+    <div class="fimg" data-par=".12"><img class="rv" src="img/onas.webp?v=2" alt="Delovni prostor SKRABLWEB: prenosnik in monitor s spletnimi stranmi" width="928" height="1113" loading="lazy" decoding="async"></div>
     <div>
       <span class="kick rv">Kaj je SKRABLWEB</span>
       <h2 class="fh rv" style="--d:.1s">Rok Škrabl</h2>
@@ -106,6 +124,39 @@
   <div class="fwrap">
     <span class="kick rv">Storitve</span><h2 class="fh rv" style="--d:.1s">Vse za vašo spletno prisotnost</h2>
     <div class="sgrid"><a class="scard rv" style="--d:0.00s" href="stran.html"><span class="ic">01 / 06</span><h3>Spletne strani</h3><p>Tehnično optimizirane, varne in prilagojene mobilnim napravam.</p><span class="more">Več →</span></a><a class="scard rv" style="--d:0.12s" href="trgovina.html"><span class="ic">02 / 06</span><h3>Spletne trgovine</h3><p>Od prvega klika do zaključenega nakupa, brez zapletov.</p><span class="more">Več →</span></a><a class="scard rv" style="--d:0.24s" href="dizajn.html"><span class="ic">03 / 06</span><h3>UI/UX dizajn</h3><p>Vizualna podoba, ki temelji na psihologiji barv in tipografiji.</p><span class="more">Več →</span></a><a class="scard rv" style="--d:0.00s" href="katalogi.html"><span class="ic">04 / 06</span><h3>Katalogi in fotografiranje</h3><p>Od pritiska na sprožilec do oddaje datotek v tiskarno.</p><span class="more">Več →</span></a><a class="scard rv" style="--d:0.12s" href="seo.html"><span class="ic">05 / 06</span><h3>SEO optimizacija</h3><p>Višje v Googlu in več organskega obiska brez plačanih klikov.</p><span class="more">Več →</span></a><a class="scard rv" style="--d:0.24s" href="marketing.html"><span class="ic">06 / 06</span><h3>Digitalni marketing</h3><p>Vaša ponudba pred ljudmi, ki jo v tem trenutku iščejo.</p><span class="more">Več →</span></a></div>
+  </div>
+</section>
+<section class="flow" id="cenik" data-chapter="Cenik">
+  <div class="fwrap">
+    <span class="kick rv">Cenik</span><h2 class="fh rv" style="--d:.1s">Izberite paket</h2>
+    <p class="fp rv" style="--d:.15s">Enkratno plačilo, brez mesečnih naročnin. Vsaka stran je napisana v kodi in prilagojena vsem napravam.</p>
+    <div class="pgrid3">
+      <article class="scard pcard rv" style="--d:0s">
+        <span class="ic">01 / 03 · Ena stran</span>
+        <h3>Vizitka</h3>
+        <div class="pprice"><b><span data-count="150">150</span><sup>€</sup></b></div>
+        <p>Ena stran z naslovno (hero) sekcijo: hitra in pregledna predstavitev vašega podjetja.</p>
+        <ul class="plist"><li>1 stran, samo hero sekcija</li><li>Prilagojena vsem napravam</li><li>Osnovna optimizacija za iskalnike</li><li>Brez mesečnih naročnin</li></ul>
+        <a class="btn ghost" href="#kontakt-obr-vse" data-paket="Vizitka – ena stran (150 €)" data-sv="sv1">Izberi paket</a>
+      </article>
+      <article class="scard pcard rv" style="--d:.12s">
+        <span class="ic">02 / 03 · Do 5 podstrani</span>
+        <h3>Predstavitvena stran</h3>
+        <div class="pprice"><small>od</small><b><span data-count="500">500</span><sup>€</sup></b></div>
+        <p>Pregledna spletna stran z do petimi podstranmi in osnovnim, čistim dizajnom.</p>
+        <ul class="plist"><li>Do 5 podstrani</li><li>Osnovni dizajn</li><li class="no">Brez scroll animacij in 3D objektov</li><li>Prilagojena vsem napravam</li><li>Osnovna optimizacija za iskalnike</li></ul>
+        <a class="btn ghost" href="#kontakt-obr-vse" data-paket="Predstavitvena stran – do 5 podstrani (od 500 €)" data-sv="sv1">Izberi paket</a>
+      </article>
+      <article class="scard pcard hot rv" style="--d:.24s">
+        <span class="ic">03 / 03 · Po meri</span>
+        <h3>Stran ali trgovina po meri</h3>
+        <div class="pprice"><b class="txt">Po dogovoru</b></div>
+        <p>Personalizirana spletna stran ali spletna trgovina, oblikovana od začetka samo za vas.</p>
+        <ul class="plist"><li>Spletna stran ali spletna trgovina</li><li>Dizajn po meri in osebni pristop</li><li>Scroll animacije in 3D, kot na tej strani</li><li>Število podstrani po dogovoru</li></ul>
+        <a class="btn" href="#kontakt-obr-vse" data-paket="Stran ali trgovina po meri (po dogovoru)">Pošlji povpraševanje</a>
+      </article>
+    </div>
+    <p class="pnote rv"><b>+</b><span><strong>Dodatno po dogovoru:</strong> vse, kar želite dodati izbranemu paketu (na primer več podstrani, dodatne slike in fotografije, dodatne funkcije), se zaračuna dodatno.</span></p>
   </div>
 </section>
 <div class="reel" data-a="8" data-b="9" aria-hidden="true"></div>
@@ -133,14 +184,15 @@
       <div class="fld"><label for="email">E-pošta</label><input id="email" name="email" type="email" placeholder="vas@email.com" autocomplete="email" required></div>
       <div class="fld"><label for="telefon">Telefon</label><input id="telefon" name="telefon" type="tel" placeholder="041 000 000" autocomplete="tel"></div>
       <fieldset><legend class="lg">Storitve</legend><label class="chk"><input id="sv0" type="checkbox" name="storitve" value="Grafično oblikovanje"><span>Grafično oblikovanje</span></label><label class="chk"><input id="sv1" type="checkbox" name="storitve" value="Izdelava spletne strani"><span>Spletna stran</span></label><label class="chk"><input id="sv2" type="checkbox" name="storitve" value="Izdelava spletne trgovine"><span>Spletna trgovina</span></label><label class="chk"><input id="sv3" type="checkbox" name="storitve" value="SEO optimizacija"><span>SEO optimizacija</span></label><label class="chk"><input id="sv4" type="checkbox" name="storitve" value="Oglaševanje"><span>Oglaševanje</span></label><label class="chk"><input id="sv5" type="checkbox" name="storitve" value="Brošura s fotografiranjem"><span>Brošura s fotografiranjem</span></label></fieldset>
+      <fieldset class="pak" id="paket"><legend class="lg">Izbrani paket</legend><label class="chk"><input id="pk0" type="radio" name="paket" value="" checked><span>Še ne vem</span></label><label class="chk"><input id="pk1" type="radio" name="paket" value="Vizitka – ena stran (150 €)"><span>Vizitka · 150 €</span></label><label class="chk"><input id="pk2" type="radio" name="paket" value="Predstavitvena stran – do 5 podstrani (od 500 €)"><span>Predstavitvena · od 500 €</span></label><label class="chk"><input id="pk3" type="radio" name="paket" value="Stran ali trgovina po meri (po dogovoru)"><span>Po meri · po dogovoru</span></label></fieldset>
       <div class="fld w"><label for="sporocilo">Sporočilo</label><textarea id="sporocilo" name="sporocilo" rows="5" placeholder="Opišite vaše želje..." required></textarea></div>
       <div class="send"><button class="btn" type="submit">Pošlji povpraševanje</button><span id="fmsg" role="status"></span></div>
       <p class="fnote">Vaše podatke uporabim samo za odgovor na povpraševanje. Več v <a href="zasebnost.html">politiki zasebnosti</a>.</p>
     </form>
     </div>
-    <footer><img src="img/skrablweb-logo-temno-ozadje.svg" alt="SKRABLWEB" width="1486" height="280" loading="lazy"><nav><a href="index.html#o_nas">O meni</a> <a href="index.html#storitve">Storitve</a> <a href="reference.html">Reference</a> <a href="index.html#kontakt-obr-vse">Kontakt</a> <a href="zasebnost.html">Zasebnost</a></nav><span>© 2026 SKRABLWEB · Internetne storitve</span></footer>
+    <footer><img src="img/skrablweb-logo-temno-ozadje.svg" alt="SKRABLWEB" width="1486" height="280" loading="lazy"><nav><a href="index.html#o_nas">O meni</a> <a href="index.html#storitve">Storitve</a> <a href="index.html#cenik">Cenik</a> <a href="reference.html">Reference</a> <a href="index.html#kontakt-obr-vse">Kontakt</a> <a href="zasebnost.html">Zasebnost</a></nav><span>© 2026 SKRABLWEB · Internetne storitve</span></footer>
   </div>
 </section>
-<script src="reel.js?v=202609302147"></script>
+<script src="reel.js?v=202610070115"></script>
 </body>
 </html>
