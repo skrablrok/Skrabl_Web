@@ -82,6 +82,9 @@
     });
   }
   // camera progress for the current scroll position, and whether any reel is on screen
+  // the 3D world appears once its fonts are ready, so its text never jumps (layout shift)
+  let fontsOK = !document.fonts;
+  if (!fontsOK) { document.fonts.ready.then(() => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(() => { fontsOK = true; })))); setTimeout(() => { fontsOK = true; }, 1500); }
   const hero = document.querySelector('.hero-pin');
   function heroP() { if (!hero) return -1; const r = hero.getBoundingClientRect(); return Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - innerHeight))); }
   function reelState() {
@@ -219,7 +222,7 @@
       const [x, y, z] = el._p; toCam(x, y, z);
       const zc = out[2];
       const o = Math.max(0, Math.min(1, (P * 0.2 - zc) / (P * 0.35))) * Math.max(0, Math.min(1, (zc + el._far) / 600));
-      if (o < 0.01) { if (el._vis !== false) { el.style.visibility = 'hidden'; el._vis = false; } continue; }
+      if (o < 0.01 || !fontsOK) { if (el._vis !== false) { el.style.visibility = 'hidden'; el._vis = false; } continue; }
       if (el._vis !== true) { el.style.visibility = 'visible'; el._vis = true; }
       // write styles only when they change: unchanged writes still make the browser recalculate styles every frame
       const op = o.toFixed(2), pe = o > 0.6 ? 'auto' : 'none', tf = `translate3d(${x}px,${y}px,${z}px) rotateY(${el._ry}deg) translate(-50%,-50%)`;
@@ -380,7 +383,7 @@
   const eio = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   let hkRect = null;
   const hst = hero && hero.querySelector('.hstage'), hbig = hero && hero.querySelector('.hbig'), hhk = hero && hero.querySelector('.hhk path');
-  if (hero) { if (RM) hero.classList.add('go'); else requestAnimationFrame(() => hero.classList.add('go')); }
+  if (hero) { if (RM) hero.classList.add('go'); else (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(() => hero.classList.add('go'))); } // start once the fonts are in, so nothing shifts
   function heroRun() {
     if (!hero || RM) return;
     const r = hero.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
