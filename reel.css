@@ -551,3 +551,8 @@ fieldset.pak.flash{animation:pakflash 1.6s ease-out}
 .legal li a{display:inline-block;padding:5px 0}
 /* gradient text: a solid colour for contrast checkers, the gradient still shows through the transparent fill */
 .gt,.menu a[aria-current="page"] b,.marquee .mrow .g,.ztext .zr,.pprice b.txt{color:var(--lamp);-webkit-text-fill-color:transparent}
+a.ig{display:inline-flex;align-items:center;vertical-align:middle}
+a.ig svg{width:18px;height:18px;display:block}
+.menu .contact a.ig{display:inline-flex}
+.roll dd a.ig svg{width:30px;height:30px}
+@media (max-width:640px){.roll dd a.ig{justify-content:center}}
