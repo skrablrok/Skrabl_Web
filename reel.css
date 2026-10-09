@@ -556,3 +556,4 @@ a.ig svg{width:18px;height:18px;display:block}
 .menu .contact a.ig{display:inline-flex}
 .roll dd a.ig svg{width:30px;height:30px}
 @media (max-width:640px){.roll dd a.ig{justify-content:center}}
+.menu .contact a.ig+a.ig{margin-left:8px}
